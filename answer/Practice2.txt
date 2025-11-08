@@ -1,0 +1,285 @@
+#include <iostream>
+using namespace std;
+
+void whatTime(int secs, int &h, int &m, int &s)
+{
+    // 请在这里补充代码，设计并实现函数whatTime,使main函数中的函数调用正确
+    /********** Begin *********/
+    // 归一到当天范围 [0, 86400)
+    secs %= (24 * 60 * 60);
+    if (secs < 0) secs += (24 * 60 * 60); // 可选的容错
+
+    h = secs / 3600;
+    m = (secs % 3600) / 60;
+    s = secs % 60;
+    /********** End **********/
+}
+
+int main()
+{
+    // secs秒表上的秒数
+    int secs;
+    // 当前时间:h-小时，m-分，s-秒
+    int h, m, s;
+    // 输入秒表上的秒数
+    cin >> secs;
+    // 计算当前时间
+    whatTime(secs,h,m,s);
+    // 输出当前时间
+    cout << h << ":" << m << ":" << s << endl;
+    return 0;
+}
+
+#include <iostream>
+using namespace std;
+// 函数leapYear
+int leapYear(int y)
+{
+    if(y % 4 == 0 && y % 100 != 0 || y % 400 == 0)
+        return 1;
+    return 0;
+}
+// 函数whatDay：计算某年某月的号是星期几
+// 参数：year-年，month-月
+// 返回值：--7分别表示星期一到星期日
+int whatDay(int year, int month)
+{
+    // 请在这里补充代码，实现函数whatDay
+    /********** Begin *********/
+  long long days = 0;
+
+    // 1900-01-01 是星期一
+    for (int y = 1900; y < year; ++y) {
+        days += 365 + leapYear(y);
+    }
+
+    int mdays[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
+    for (int m = 1; m < month; ++m) {
+        days += mdays[m - 1];
+        if (m == 2 && leapYear(year)) ++days; // 闰年 2 月加一天
+    }
+
+    // 1~7：周一~周日
+    return (int)(days % 7) + 1;
+    /********** End **********/
+}
+int main()
+{
+    // 年、月、星期几
+    int y, m, xq;
+    // 输入年月
+    cin >> y >> m;
+    // 计算星期几
+    xq = whatDay(y,m);
+    // 输出星期
+    cout << y << "年" << m << "月1日是星期";
+    if(xq == 7)
+        cout << "日" << endl;
+    else
+        cout << xq << endl;
+    return 0;
+}
+
+// 包含两种I/O库，可以使用任一种输入输出方式
+#include <stdio.h>
+#include <iostream>
+using namespace std;
+// 函数printMonth：按要求的格式打印某年某月的日历
+// 参数：year-年，month-月
+// 返回值：无
+void printMonth(int year, int month);
+// leapYear：判断闰年
+// 参数：y-年
+// 返回值：1-是闰年，0-不是闰年
+int leapYear(int y)
+{
+    if(y % 4 == 0 && y % 100 != 0 || y % 400 == 0)
+        return 1;
+    return 0;
+}
+// 函数whatDay:计算某年某月的1号是星期几
+// 参数：year-年，month-月
+// 返回值：1到7--星期1到星期日
+int whatDay(int year, int month)
+{
+    // 1年月日是星期一
+    int w = 1;
+    int i;
+    // 1到year-1都是全年
+    for(i = 1; i < year; i++)
+    {
+        if(leapYear(i))
+            w += 366;
+        else
+            w += 365;
+    }
+    switch(month)
+    {
+    case 12: // 加月的
+        w += 30;
+    case 11: // 加月的
+        w += 31;
+    case 10: // 加月的
+        w += 30;
+    case 9:  // 加月的
+        w += 31;
+    case 8:  // 加月的
+        w += 31;
+    case 7:  // 加月的
+        w += 30;
+    case 6:  // 加月的
+        w += 31;
+    case 5:  // 加月的
+        w += 30;
+    case 4:  // 加月的
+        w += 31;
+    case 3:  // 加月的
+        if(leapYear(year))
+            w += 29;
+        else
+            w += 28;
+    case 2:  // 加月的天
+        w += 31;
+    case 1:  // 1月不加了
+        ;
+    }
+    // 得到-6，其中为星期天
+    w = w % 7;
+    // 调整星期天
+    if(w == 0)
+        w = 7;
+    return w;
+}
+// 请在下面补充代码，实现函数printMonth
+/*************** Begin **************/
+// 函数days：计算某年某月有多少天
+// 参数：year-年，month-月
+// 返回值：该年该月的天数
+int days(int year, int month)
+{
+    switch (month)
+    {
+    case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+        return 31;
+    case 4: case 6: case 9: case 11:
+        return 30;
+    case 2:
+        return leapYear(year) ? 29 : 28;
+    default:
+        return 0;
+    }
+}
+
+// 函数printMonth：按要求的格式打印某年某月的日历
+void printMonth(int year, int month)
+{
+    // 表头：每个汉字前输出两个空格，保证宽度为 4（右对齐）
+    cout << "  一  二  三  四  五  六  日" << endl;
+
+    // 本月1号是星期几（周一=1 … 周日=7）
+    int w = whatDay(year, month);
+
+    // 本月天数
+    int dcnt = days(year, month);
+
+    // 1号前的占位空格：每列宽 4
+    for (int i = 1; i < w; ++i) cout << "    ";
+
+    // 逐日输出，宽度 4，右对齐；到周日换行
+    for (int d = 1; d <= dcnt; ++d)
+    {
+        printf("%4d", d);
+        if ((d + w - 1) % 7 == 0) printf("\n");
+    }
+    // 若最后一行未换行，补一个换行
+    if ((dcnt + w - 1) % 7 != 0) printf("\n");
+}
+
+
+
+/*************** End **************/
+int main()
+{
+    // 年、月
+    int y, m;
+    // 输入年月
+    cin >> y >> m;
+    // 输出该年月的日历
+    printMonth(y,m);
+    return 0;
+}
+
+#include <iostream>
+using namespace std;
+// 递归函数splitNum：顺序输出n的各位数字，每个数字占一行
+// 返回值：无
+void splitNum(unsigned int n)
+{
+    // 请在这里补充代码，实现递归函数splitNum
+    /********** Begin *********/
+   if (n < 10) {               // 只有一位时直接输出
+        cout << n << '\n';
+        return;
+    }
+    splitNum(n / 10);           // 先输出更高位
+    cout << (n % 10) << '\n';   // 再输出当前最低位
+   
+   
+    /********** End **********/
+}
+int main()
+{
+    unsigned n;
+    // 输入正整数n
+    cin >> n;
+    // 调用splitNum函数，顺序输出n的各位数字
+    splitNum(n);
+    return 0;
+}
+
+#include <iostream>
+using namespace std;
+// 函数funP：实现数学函数P函数
+// 返回值：返回P(n,x)的值
+double funP(int n, double x)
+{
+    // 请在这里补充代码，实现递归函数funP
+    /********** Begin *********/
+   
+
+    if (n == 0) return 1.0;
+    if (n == 1) return x;
+    return ( (2.0 * n - 1.0) * funP(n - 1, x)
+           - (n - 1.0) * funP(n - 2, x) ) / n;
+
+    
+    /********** End **********/
+}
+int main()
+{
+    int n;
+    double x;
+    // 输入n、x
+    cin >> n >> x;
+    // 输出P(n,x)
+    cout << "P("<<n<<", "<<x<<")=" << funP(n,x) << endl;
+    return 0;
+}
+
+#include <iostream>
+using namespace std;
+
+// 函数fun：计算分段函数的值
+// 参数x：输入的正数
+// 返回值：返回fun(x)的值
+float fun(float x)
+{
+    /********** Begin *********/
+    if (x < 10)
+        return x;
+    else if (x <= 20)
+        return -x;
+    else
+        return x * 3;
+    /********** End **********/
+}
