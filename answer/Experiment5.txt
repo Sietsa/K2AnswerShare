@@ -1,0 +1,220 @@
+#include <iostream>
+using namespace std;
+
+// 函数原型
+double parallelogramArea(double base, double height);  // base: 底, height: 高
+
+int main() {
+    double a, h, area;
+
+    cout << "请输入平形四边形的底和高：";
+    cin >> a >> h;
+
+    // 函数调用
+    area = parallelogramArea(a, h);
+
+    cout << "area = " << area << endl;
+    return 0;
+}
+
+// 函数定义
+double parallelogramArea(double base, double height) {
+    return base * height;
+}
+
+#include <stdio.h>
+
+// 求阶乘函数
+int fact(int n) {
+    int result = 1;
+    for (int i = 1; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
+
+// 计算组合数函数
+int combination(int m, int k) {
+    return fact(m) / (fact(k) * fact(m - k));
+}
+
+int main() {
+    int m, k, temp;
+    
+    // 提示用户输入
+    printf("请输入m k：");
+    
+    // 输入m和k
+    scanf("%d %d", &m, &k);
+    
+    // 确保 m >= k，如果不是则交换
+    if (m < k) {
+        temp = m;
+        m = k;
+        k = temp;
+    }
+    
+    // 计算组合数
+    int result = combination(m, k);
+    
+    // 输出结果
+    printf("%d 个数中取出 %d 个数的组合有 %d 种\n", m, k, result);
+    
+    return 0;
+}
+
+
+#include <stdio.h>
+
+// 判断是否为素数的函数
+int prime(int n) {
+    // 1不是素数
+    if (n <= 1) {
+        return 0;
+    }
+    
+    // 2是最小的素数
+    if (n == 2) {
+        return 1;
+    }
+    
+    // 判断n是否有因子（从2到n-1）
+    for (int i = 2; i < n; i++) {
+        if (n % i == 0) {
+            return 0;  // 有因子，不是素数
+        }
+    }
+    
+    return 1;  // 没有因子，是素数
+}
+
+int main() {
+    int n;
+    
+    // 提示用户输入
+    printf("请输入 n：");
+    
+    // 输入n
+    scanf("%d", &n);
+    
+    // 调用prime函数判断
+    if (prime(n)) {
+        printf("%d 是素数\n", n);
+    } else {
+        printf("%d 不是素数\n", n);
+    }
+    
+    return 0;
+}
+
+ #include <iostream>
+#include <iomanip>
+using namespace std;
+
+int fact(int n) {
+    int f = 1;
+    for (int i = 2; i <= n; ++i) f *= i;
+    return f;
+}
+
+double sum(int x, int y) {
+    if (x > y) swap(x, y);
+    double s = 0.0;
+    for (int k = x; k <= y; ++k) s += 1.0 / fact(k);
+    return s;
+}
+
+int main() {
+    int x, y;
+    cout << "请输入范围x y：";
+    if (!(cin >> x >> y)) return 0;
+
+    cout << setprecision(6);              // 6 位有效数字（不使用 fixed）
+    cout << "结果为：" << sum(x, y) << endl;
+    return 0;
+}
+
+#include <iostream>
+using namespace std;
+
+// 计算第n年的母牛数量
+int cow(int n) {
+    if (n <= 0) {
+        return 0;
+    }
+    if (n <= 3) {
+        return 1;  // 前3年都只有1头母牛
+    }
+    // 递归公式：第n年 = 第(n-1)年 + 第(n-3)年
+    return cow(n - 1) + cow(n - 3);
+}
+
+int main() {
+    int n;
+    cout << "输入年份 n：";
+    cin >> n;
+    cout << "第 " << n << " 年母牛数为：" << cow(n) << endl;
+    return 0;
+}
+  
+
+#include <iostream>
+#include <cstdio>
+using namespace std;
+
+// 判断是否为英文字母
+int isLetter(char ch) {
+    return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');
+}
+
+// 判断是否为数字
+int isDigit(char ch) {
+    return (ch >= '0' && ch <= '9');
+}
+
+// 判断是否为空格（题目仅统计普通空格）
+int isSpace(char ch) {
+    return (ch == ' ');
+}
+
+int main() {
+    char ch;
+    int letter = 0, digit = 0, space = 0, others = 0;
+
+    cout << "请输入一行字符，回车键结束\n";
+    while ((ch = getchar()) != '\n' && ch != EOF) {
+        if (isLetter(ch))      letter++;
+        else if (isDigit(ch))  digit++;
+        else if (isSpace(ch))  space++;
+        else                   others++;
+    }
+
+    cout << "英文字母：" << letter << endl;
+    cout << "数字："     << digit  << endl;
+    cout << "空格："     << space  << endl;
+    cout << "其他字符：" << others << endl;
+    return 0;
+}
+
+
+#include <iostream>
+#include "triangle.h"
+using namespace std;
+
+int main() {
+    double x, y, z;
+    cout << "请输入三角形三边：" << endl;
+    cin >> x >> y >> z;
+    
+    if (isTriangle(x, y, z)) {
+        cout << "周长：" << perimeter(x, y, z) << endl;
+        cout << "面积：" << area(x, y, z) << endl;
+    } else {
+        cout << "无法构成三角形" << endl;
+    }
+    
+    return 0;
+}
+
+
+
